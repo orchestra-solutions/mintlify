@@ -27,3 +27,10 @@ Building developer documentation for Orchestra, a payment orchestration service 
 - Focus on reducing time-to-first-integration
 - Maintain practical, real-world examples
 - Version control all documentation assets
+
+## Technical Stack
+- **Platform**: Mintlify - hosted documentation with MDX support
+- **Format**: Markdown with MDX components for visual enhancement
+- **Repo structure**: GitHub repo with `docs/` directory for content
+- **API spec**: OpenAPI 3.0.4 (`orchsol.json`) for auto-generated reference
+- **Deployment**: GitHub → Mintlify pipeline (automatic on push)

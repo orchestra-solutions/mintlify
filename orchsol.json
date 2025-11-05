@@ -1,0 +1,2314 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "Orchestra API",
+    "description": "Code Version 1.0.9.36",
+    "version": "Prod"
+  },
+  "servers": [
+    {
+      "url": "https://api.orchestrasolutions.com"
+    }
+  ],
+  "paths": {
+    "/EWalletOperations": {
+      "post": {
+        "tags": [
+          "EWalletOperations"
+        ],
+        "summary": "Start an eWallet session",
+        "operationId": "StartSession",
+        "requestBody": {
+          "description": "Start Session Request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/eWallet.Models.StartEWalletsSessionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/eWallet.Models.TokenModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/EWalletOperations/validateResults": {
+      "post": {
+        "tags": [
+          "EWalletOperations"
+        ],
+        "summary": "Validate Operation results",
+        "operationId": "ValidateResults",
+        "requestBody": {
+          "description": "Operation results token",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/eWallet.Models.EWalletResultData"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGatewayAccounts/{name}": {
+      "get": {
+        "tags": [
+          "PaymentGatewayAccounts"
+        ],
+        "summary": "Retrieve Payment Gateway Account",
+        "description": "A Payment Gateway Account is the set of information necessary for connecting to a specific payment gateway through our system.\nThis method allows you to retrieve the information set on a particular payment gateway account. You can then update it using the `[PUT] PaymentGatewayAccounts/{name}` method",
+        "operationId": "PaymentGatewayAccountRetrieve",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "A unique name of this Payment Gateway Account",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9]{3,64}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccountFullOutputModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "PaymentGatewayAccounts"
+        ],
+        "summary": "Add or Replace a Payment Gateway Account",
+        "description": "A Payment Gateway Account is the set of information necessary for connecting to a specific payment gateway through our system.\nThis method allows you to add a new stored Payment Gateway Account in the system or to replace an existing one.",
+        "operationId": "PaymentGatewayAccountSet",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "A unique name of this Payment Gateway Account",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9]{3,64}$",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Payment gateway account data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccountInputModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccountFullOutputModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "PaymentGatewayAccounts"
+        ],
+        "summary": "Delete a Payment Gateway Account",
+        "description": "This method allows you to delete a stored Payment Gateway Account in the system.",
+        "operationId": "PaymentGatewayAccountDelete",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "A unique name of this Payment Gateway Account",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9]{3,64}$",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGatewayAccounts": {
+      "get": {
+        "tags": [
+          "PaymentGatewayAccounts"
+        ],
+        "summary": "List Payment Gateway Accounts",
+        "description": "This method allows you to list all stored Payment Gateway Accounts in the system",
+        "operationId": "PaymentGatewayAccountsList",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccountBriefOutputModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway": {
+      "get": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "List all payment gateways",
+        "description": "To provide you with full payment orchestration capabilities, we have integrated with many different payment gateways and processors around the world. This method allows you to retrieve the list of all integrated payment gateways in our system and provide you with the relevant connection settings required for each of them.\nTo see a graphical list of the supported payment gateways, please visit our website.\nIf you would like us to support a new payment gateway not on the list, please contact our support.",
+        "operationId": "GatewayList",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PayTools_Shared.Models.PaymentGateway.PaymentGatewayDescriptionModel"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/charge": {
+      "post": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway charge operation",
+        "description": "This method allows you to perform a \"charge\" operation through your payment gateway. A \"charge\" operation will request immediate payment from the card and the card owner will see this listed as a transaction in their card statement.\nIf needed, you can void this \"charge\" operation by using the `[DELETE] /PaymentGateway/void` method.",
+        "operationId": "GatewayCharge",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.AuthRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted (for future processing by payment gateway)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/authorize": {
+      "post": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway authorize operation",
+        "description": "This method allows you to perform an \"authorize\" operation (also called \"preauthorization\" or \"authorization\") through your payment gateway. When you perform the \"authorize\" operation, the bank that issued the credit card will place an authorization of the total amount of the funds. This is how the bank determines if the funds are available to make the purchase. The card will not actually be “charged” until you perform the \"capture\" operation (using our `[PUT] /PaymentGateway/capture` method).\n**Please note**, different card brands and different banks allow for different time frames on the lifespan of a payment authorization. You will need to check with your payment processor on how long you would have between performing an \"authorize\" operation and a \"charge\" operation\".\nIf needed, you can void this \"authorize\" operation by using the `[DELETE] /PaymentGateway/void` method",
+        "operationId": "GatewayAuthorize",
+        "requestBody": {
+          "description": "Card Authorize model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.AuthRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted (for future processing by payment gateway)"
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/capture": {
+      "put": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway capture operation",
+        "description": "This method allows you to perform a \"capture\" operation on a previously created \"authorize\" operation (see our `[POST] /PaymentGateway/authorize` method for additional information).\nWhen you perform the \"authorize\" operation, the bank that issued the credit card will place an authorization of the total amount of the funds. This is how the bank determines if the funds are available to make the purchase. The card will not actually be “charged” until you perform the \"capture\" operation.\n**Please note**, different card brands and different banks allow for different time frames on the lifespan of a payment authorization. You will need to check with your payment processor on how long you would have between performing an \"authorize\" operation and a \"charge\" operation\".",
+        "operationId": "GatewayCapture",
+        "requestBody": {
+          "description": "Capture Request Model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.CaptureVoidRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted (for future processing by payment gateway)"
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/tokenize": {
+      "post": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway tokenize operation",
+        "description": "This method allows you to perform a \"tokenize\" operation for a card.\nThis will take the card details and will generate a payment gateway-specific token.\nPlease note that not all payment gateways support this operation.",
+        "operationId": "GatewayTokenize",
+        "requestBody": {
+          "description": "Tokenize Request Model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.TokenizeRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - payment gateway does not support the 'Tokenize' operation or rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/refund": {
+      "put": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway refund operation",
+        "description": "This method allows you to submit a \"refund\" operation against a previously created \"charge\" (using `[POST] /PaymentGateway/charge`) or \"capture\" (using `[POST] /PaymentGateway/capture`) operations.",
+        "operationId": "GatewayRefund",
+        "requestBody": {
+          "description": "Refund Request Model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.RefundRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted (for future processing by payment gateway)"
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/void": {
+      "delete": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway Void operation",
+        "description": "This method allows you to submit a \"void\" operation against a previously created \"charge\" (using `[POST] /PaymentGateway/charge`) or \"authorize\" (using `[POST] /PaymentGateway/authorize`) operations.",
+        "operationId": "GatewayVoid",
+        "requestBody": {
+          "description": "Void Request Model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.CaptureVoidRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Accepted (for future processing by payment gateway)"
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "500": {
+            "description": "Error with payment gateway"
+          },
+          "503": {
+            "description": "Temporary failure with payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/PaymentGateway/status": {
+      "post": {
+        "tags": [
+          "PaymentGateway"
+        ],
+        "summary": "Perform a payment gateway status operation",
+        "description": "This method allows you to get the status of a previously created \"charge\" (using `[POST] /PaymentGateway/charge`) or \"authorize\" (using `[POST] /PaymentGateway/authorize`) operations.",
+        "operationId": "GatewayStatus",
+        "requestBody": {
+          "description": "Void Request Model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.StatusRequestModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Payments.OperationResult"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict - rejected by payment gateway"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/Utils/apiKey": {
+      "get": {
+        "tags": [
+          "Utils"
+        ],
+        "summary": "Validate Apikey",
+        "description": "This operation allows you to validate your API key and make sure that it is operational. Additionally, this method will allow you to test and check that the API is functioning properly",
+        "operationId": "ValidateApiKey",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.AuthenticationResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/StringTokens": {
+      "post": {
+        "tags": [
+          "StringTokens"
+        ],
+        "summary": "Store and tokenize a string",
+        "description": "This method allows you to submit a string to be stored and tokenized in our system.\nOnce tokenized, the token ID will be returned in the body of the response and the full token URI will be returned in the `Location` header.",
+        "operationId": "StoreStringToken",
+        "requestBody": {
+          "description": "StringToken input model",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayTools_Api.Models.StringTokenIntputModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Created",
+            "headers": {
+              "Location": {
+                "description": "Token URI representing the stringToken",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.StringTokenMetaDataOutputModel"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.StringTokenMetaDataOutputModel"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/StringTokens/{token}": {
+      "get": {
+        "tags": [
+          "StringTokens"
+        ],
+        "summary": "Retrieve content of StringToken",
+        "description": "This method allows you to retrieve the stored content of the StringToken.",
+        "operationId": "StringTokenRetrieve",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "The token ID of the StringToken you would like to retrieve the content for",
+            "required": true,
+            "schema": {
+              "pattern": "[A-Za-z0-9]{32}",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.StringTokenOutputModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "StringTokens"
+        ],
+        "summary": "Delete an existing string by token",
+        "description": "This method allows you to delete a stringToken by its token",
+        "operationId": "Delete",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "The token ID representing the string to be deleted",
+            "required": true,
+            "schema": {
+              "pattern": "[A-Za-z0-9]{32}",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    },
+    "/StringTokens/{token}/meta": {
+      "get": {
+        "tags": [
+          "StringTokens"
+        ],
+        "summary": "Retrieve meta data of a StringToken",
+        "description": "This method allows you to retrieve the meta data of a StringToken.\nThe response to this method will **not** retrieve the content of the StringToken (you can do that by using `GET /StringTokens/{token}`)",
+        "operationId": "StringTokenRetrieveMetaData",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "Token representing the string to be retrieved",
+            "required": true,
+            "schema": {
+              "pattern": "[A-Za-z0-9]{32}",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Shared.Models.ValidationErrorMessage"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PayTools_Api.Models.StringTokenMetaDataOutputModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          },
+          "401": {
+            "description": "Not authenticated"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [ ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PayTools_Api.Models.AuthRequestModel": {
+        "required": [
+          "amount",
+          "card",
+          "currency"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The currency of the transaction. Based on the <a href=\"https://en.wikipedia.org/wiki/ISO_4217#Active_codes\" target=\"_blank\">ISO 4217</a> standard."
+          },
+          "isDigital": {
+            "type": "boolean",
+            "description": "This field is an additional optional parameter used by some of our payment processors. Please read our additional guidance section for payment processors that use this and other parameters"
+          },
+          "orderDesc": {
+            "type": "string",
+            "description": "This field is an additional optional parameter used by some of our payment processors. Please read our additional guidance section for payment processors that use this and other parameters",
+            "nullable": true
+          },
+          "payerDetails": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PayerDetails"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount to be charged (the amount should be in major units - for example, 10.23)",
+            "format": "double"
+          },
+          "myRef": {
+            "type": "string",
+            "description": "Your custom reference for this transaction",
+            "nullable": true
+          },
+          "card": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.CardInputModel"
+          },
+          "paymentGatewayAccountName": {
+            "type": "string",
+            "description": "The reference name provided to the stored Payment Gateway Account as set in `PUT /PaymentGatewayAccounts/{name}`.\n**Please note**, if you provide us with both this parameter and the raw credentials in the `paymentGatewayAccount` object, this parameter will be ignored and the raw credentials will take precedence.",
+            "nullable": true
+          },
+          "certificateName": {
+            "maxLength": 128,
+            "type": "string",
+            "description": "Optional parameter if the payment gateway requires authentication using a client certificate. The name of the certificate that was stored in our system via our <a href=\"https://portal.orchestrasolutions.com\" target=\"_blank\">users portal</a>",
+            "nullable": true
+          },
+          "paymentGatewayAccount": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccount"
+          },
+          "networkTokenBrand": {
+            "$ref": "#/components/schemas/Payments.NetworkTokenSchemes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PayTools_Api.Models.AuthenticationResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Status",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "description": "Username",
+            "nullable": true
+          },
+          "accountId": {
+            "type": "integer",
+            "description": "Account Id",
+            "format": "int64"
+          },
+          "isSandbox": {
+            "type": "boolean",
+            "description": "Is this a sandbox user"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for display authentication results"
+      },
+      "PayTools_Api.Models.CaptureVoidRequestModel": {
+        "required": [
+          "amount",
+          "card",
+          "currency",
+          "refTransId"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The currency of the transaction. Based on the <a href=\"https://en.wikipedia.org/wiki/ISO_4217#Active_codes\" target=\"_blank\">ISO 4217</a> standard."
+          },
+          "refTransId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The transaction ID that this operation is referring to."
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount to be charged (the amount should be in major units - for example, 10.23)",
+            "format": "double"
+          },
+          "myRef": {
+            "type": "string",
+            "description": "Your custom reference for this transaction",
+            "nullable": true
+          },
+          "card": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.CardInputModel"
+          },
+          "paymentGatewayAccountName": {
+            "type": "string",
+            "description": "The reference name provided to the stored Payment Gateway Account as set in `PUT /PaymentGatewayAccounts/{name}`.\n**Please note**, if you provide us with both this parameter and the raw credentials in the `paymentGatewayAccount` object, this parameter will be ignored and the raw credentials will take precedence.",
+            "nullable": true
+          },
+          "certificateName": {
+            "maxLength": 128,
+            "type": "string",
+            "description": "Optional parameter if the payment gateway requires authentication using a client certificate. The name of the certificate that was stored in our system via our <a href=\"https://portal.orchestrasolutions.com\" target=\"_blank\">users portal</a>",
+            "nullable": true
+          },
+          "paymentGatewayAccount": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccount"
+          },
+          "networkTokenBrand": {
+            "$ref": "#/components/schemas/Payments.NetworkTokenSchemes"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for a Capturing or voiding a previously Pre-authorize request via a payment gateway"
+      },
+      "PayTools_Api.Models.CardInputModel": {
+        "required": [
+          "cardHolderName",
+          "cardNumber",
+          "expirationMonth",
+          "expirationYear"
+        ],
+        "type": "object",
+        "properties": {
+          "ownerID": {
+            "type": "string",
+            "description": "Card owner Id",
+            "nullable": true
+          },
+          "issueNumber": {
+            "type": "string",
+            "description": "Card Issue Number",
+            "nullable": true
+          },
+          "cvv": {
+            "type": "string",
+            "description": "Card security code (digits on back of card) or a Reference to a Tokenized string. A Token should be referenced in the format @TOKEN, e.g \\\"@nQGywsQE9gbURtrXEjTZwtWqeMdK9nsO\\",
+            "nullable": true
+          },
+          "threeDSAuthentication": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.ThreeDSAuthenticationInputModel"
+          },
+          "cardType": {
+            "$ref": "#/components/schemas/Payments.CardTypes"
+          },
+          "cardHolderName": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Cardholder name (as apears on card)"
+          },
+          "cardNumber": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Card number (PAN) or a Reference to a Tokenized string. A Token should be referenced in the format @TOKEN, e.g \"@nQGywsQE9gbURtrXEjTZwtWqeMdK9nsO\""
+          },
+          "expirationYear": {
+            "type": "integer",
+            "description": "Expiration year",
+            "format": "int32"
+          },
+          "expirationMonth": {
+            "type": "integer",
+            "description": "Expiration month",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The card details that should be charged. You can either provide us with the raw card details or provide a reference to the stored card details in a token."
+      },
+      "PayTools_Api.Models.PayerDetails": {
+        "required": [
+          "clientIPAddress",
+          "countryCode"
+        ],
+        "type": "object",
+        "properties": {
+          "address1": {
+            "type": "string",
+            "description": "1st address line",
+            "nullable": true
+          },
+          "address2": {
+            "type": "string",
+            "description": "2nd address line",
+            "nullable": true
+          },
+          "address3": {
+            "type": "string",
+            "description": "3rd address line",
+            "nullable": true
+          },
+          "postCode": {
+            "type": "string",
+            "description": "Postal code or Zip code",
+            "nullable": true
+          },
+          "clientIPAddress": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Client IP address"
+          },
+          "city": {
+            "type": "string",
+            "description": "City",
+            "nullable": true
+          },
+          "stateProvince": {
+            "type": "string",
+            "description": "State or Province",
+            "nullable": true
+          },
+          "countryCode": {
+            "minLength": 1,
+            "pattern": "[A-Z]{2}",
+            "type": "string",
+            "description": "2 letter country code (<a href=\"https://en.wikipedia.org/wiki/ISO_3166-2#Current_codes\" target=\"_blank\">ISO 3166-2 <img src=\"https://files.readme.io/b676144-openNewWindow.png\" width=\"10\" /></a>)"
+          }
+        },
+        "additionalProperties": false,
+        "description": "The billing information of the card owner"
+      },
+      "PayTools_Api.Models.PaymentGatewayAccount": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayName": {
+            "type": "string",
+            "description": "Unique name of the Payment Gateway the account information relates to.",
+            "nullable": true
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PayTools_Shared.Models.KeyValue"
+            },
+            "description": "A list of key-value pairs that represents your credentials within the Payment gateway. \nEach key should represent a parameter listed in the \"CredentialsNames\" element of the response from the list all payment gateways method at `[GET] /paymentGateway`\nExample:\n\"Credentials\": [\n   {\n       \"Key\": \"PrivateKey\",\n       \"Value\": \"VBtt666M/G098098vgdewvk0Mc-GH\"\n   }\n]",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "The raw credentials necessary to connect to the chosen payment gateway as defined in `GET /PaymentGateway`.\n**Please note**, if you provide us with both the raw details here and a stored Payment Gateway Account in the `paymentGatewayAccountName` parameter, these credentials will take precedence."
+      },
+      "PayTools_Api.Models.PaymentGatewayAccountBriefOutputModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of account",
+            "nullable": true
+          },
+          "paymentGatewayName": {
+            "type": "string",
+            "description": "Unique name of the Payment Gateway the account information relates to.",
+            "nullable": true
+          },
+          "creationTime": {
+            "type": "string",
+            "description": "Date and time the credentials were stored",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Output Model for designating a payment gateway account with a client certificate"
+      },
+      "PayTools_Api.Models.PaymentGatewayAccountFullOutputModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of account",
+            "nullable": true
+          },
+          "creationTime": {
+            "type": "string",
+            "description": "Date and time the credentials were stored",
+            "format": "date-time"
+          },
+          "paymentGatewayName": {
+            "type": "string",
+            "description": "Unique name of the Payment Gateway the account information relates to.",
+            "nullable": true
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PayTools_Shared.Models.KeyValue"
+            },
+            "description": "A list of key-value pairs that represents your credentials within the Payment gateway. \nEach key should represent a parameter listed in the \"CredentialsNames\" element of the response from the list all payment gateways method at `[GET] /paymentGateway`\nExample:\n\"Credentials\": [\n   {\n       \"Key\": \"PrivateKey\",\n       \"Value\": \"VBtt666M/G098098vgdewvk0Mc-GH\"\n   }\n]",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Output Model for designating a payment gateway account"
+      },
+      "PayTools_Api.Models.PaymentGatewayAccountInputModel": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayName": {
+            "type": "string",
+            "description": "Unique name of the Payment Gateway the account information relates to.",
+            "nullable": true
+          },
+          "credentials": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PayTools_Shared.Models.KeyValue"
+            },
+            "description": "A list of key-value pairs that represents your credentials within the Payment gateway. \nEach key should represent a parameter listed in the \"CredentialsNames\" element of the response from the list all payment gateways method at `[GET] /paymentGateway`\nExample:\n\"Credentials\": [\n   {\n       \"Key\": \"PrivateKey\",\n       \"Value\": \"VBtt666M/G098098vgdewvk0Mc-GH\"\n   }\n]",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Input Model for designating a payment gateway account"
+      },
+      "PayTools_Api.Models.RefundRequestModel": {
+        "required": [
+          "amount",
+          "card",
+          "currency",
+          "refTransId"
+        ],
+        "type": "object",
+        "properties": {
+          "currency": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The currency of the transaction. Based on the <a href=\"https://en.wikipedia.org/wiki/ISO_4217#Active_codes\" target=\"_blank\">ISO 4217</a> standard."
+          },
+          "refTransId": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The transaction ID that this operation is referring to."
+          },
+          "payerDetails": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PayerDetails"
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount to be charged (the amount should be in major units - for example, 10.23)",
+            "format": "double"
+          },
+          "myRef": {
+            "type": "string",
+            "description": "Your custom reference for this transaction",
+            "nullable": true
+          },
+          "card": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.CardInputModel"
+          },
+          "paymentGatewayAccountName": {
+            "type": "string",
+            "description": "The reference name provided to the stored Payment Gateway Account as set in `PUT /PaymentGatewayAccounts/{name}`.\n**Please note**, if you provide us with both this parameter and the raw credentials in the `paymentGatewayAccount` object, this parameter will be ignored and the raw credentials will take precedence.",
+            "nullable": true
+          },
+          "certificateName": {
+            "maxLength": 128,
+            "type": "string",
+            "description": "Optional parameter if the payment gateway requires authentication using a client certificate. The name of the certificate that was stored in our system via our <a href=\"https://portal.orchestrasolutions.com\" target=\"_blank\">users portal</a>",
+            "nullable": true
+          },
+          "paymentGatewayAccount": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccount"
+          },
+          "networkTokenBrand": {
+            "$ref": "#/components/schemas/Payments.NetworkTokenSchemes"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for UPG refund operation"
+      },
+      "PayTools_Api.Models.StatusRequestModel": {
+        "type": "object",
+        "properties": {
+          "refTransId": {
+            "type": "string",
+            "description": "The transaction Id given by the payment gateway that this operation is referring to.",
+            "nullable": true
+          },
+          "myRef": {
+            "type": "string",
+            "description": "The reference Id given by the merchant that this operation is referring to.",
+            "nullable": true
+          },
+          "paymentGatewayAccountName": {
+            "type": "string",
+            "description": "The reference name provided to the stored Payment Gateway Account as set in `PUT /PaymentGatewayAccounts/{name}`.\n**Please note**, if you provide us with both this parameter and the raw credentials in the `paymentGatewayAccount` object, this parameter will be ignored and the raw credentials will take precedence.",
+            "nullable": true
+          },
+          "certificateName": {
+            "maxLength": 128,
+            "type": "string",
+            "description": "Optional parameter if the payment gateway requires authentication using a client certificate. The name of the certificate that was stored in our system via our <a href=\"https://portal.orchestrasolutions.com\" target=\"_blank\">users portal</a>",
+            "nullable": true
+          },
+          "paymentGatewayAccount": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccount"
+          },
+          "networkTokenBrand": {
+            "$ref": "#/components/schemas/Payments.NetworkTokenSchemes"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for requesting a previous transaction ststus"
+      },
+      "PayTools_Api.Models.StringTokenIntputModel": {
+        "required": [
+          "payload"
+        ],
+        "type": "object",
+        "properties": {
+          "payload": {
+            "maxLength": 16384,
+            "minLength": 1,
+            "type": "string",
+            "description": "The content of the string you would like to tokenize"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for providing a string to be tokenized"
+      },
+      "PayTools_Api.Models.StringTokenMetaDataOutputModel": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "description": "Token ID representing the stringToken",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "description": "Date and time the string was stored",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for display a string token meta-data"
+      },
+      "PayTools_Api.Models.StringTokenOutputModel": {
+        "type": "object",
+        "properties": {
+          "clearPayload": {
+            "type": "string",
+            "description": "The content of the StringToken that was stored in our system",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "description": "Token ID representing the stringToken",
+            "nullable": true
+          },
+          "createTime": {
+            "type": "string",
+            "description": "Date and time the string was stored",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for display a string token, including the clear text"
+      },
+      "PayTools_Api.Models.ThreeDSAuthenticationInputModel": {
+        "required": [
+          "authenticationValue",
+          "eci",
+          "merchantName",
+          "version",
+          "xid"
+        ],
+        "type": "object",
+        "properties": {
+          "authenticationValue": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Authentication value"
+          },
+          "eci": {
+            "maxLength": 2,
+            "minLength": 1,
+            "type": "string",
+            "description": "Electronic Commerce Indicator"
+          },
+          "xid": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "description": "transaction ID from the 3D Secure provider"
+          },
+          "version": {
+            "maxLength": 5,
+            "minLength": 1,
+            "type": "string",
+            "description": "3ds Version"
+          },
+          "merchantName": {
+            "maxLength": 40,
+            "minLength": 1,
+            "type": "string",
+            "description": "Merchant name"
+          },
+          "sli": {
+            "type": "string",
+            "description": "(MasterCard) Security Level Indicator",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for 3DS authentication data"
+      },
+      "PayTools_Api.Models.TokenizeRequestModel": {
+        "required": [
+          "card"
+        ],
+        "type": "object",
+        "properties": {
+          "payerDetails": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PayerDetails"
+          },
+          "card": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.CardInputModel"
+          },
+          "paymentGatewayAccountName": {
+            "type": "string",
+            "description": "The reference name provided to the stored Payment Gateway Account as set in `PUT /PaymentGatewayAccounts/{name}`.\n**Please note**, if you provide us with both this parameter and the raw credentials in the `paymentGatewayAccount` object, this parameter will be ignored and the raw credentials will take precedence.",
+            "nullable": true
+          },
+          "certificateName": {
+            "maxLength": 128,
+            "type": "string",
+            "description": "Optional parameter if the payment gateway requires authentication using a client certificate. The name of the certificate that was stored in our system via our <a href=\"https://portal.orchestrasolutions.com\" target=\"_blank\">users portal</a>",
+            "nullable": true
+          },
+          "paymentGatewayAccount": {
+            "$ref": "#/components/schemas/PayTools_Api.Models.PaymentGatewayAccount"
+          },
+          "networkTokenBrand": {
+            "$ref": "#/components/schemas/Payments.NetworkTokenSchemes"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for performing a payment gateway tokenization"
+      },
+      "PayTools_Shared.Models.KeyValue": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Key",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "description": "Value",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "A helper class"
+      },
+      "PayTools_Shared.Models.PaymentGateway.PaymentGatewayDescriptionModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The ePayTools internal identifier for this Payment Gateway",
+            "nullable": true
+          },
+          "displayName": {
+            "type": "string",
+            "description": "The name of the Payment Gateway in friendly format",
+            "nullable": true
+          },
+          "paymentGatewayUrl": {
+            "type": "string",
+            "description": "Url to Payment Gateway site (informational)",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Payment Gateway Description (informational)",
+            "nullable": true
+          },
+          "credentialsNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of all credential parameters needed to provide for this Payment Gateway",
+            "nullable": true
+          },
+          "supportsNetworkToken": {
+            "type": "boolean",
+            "description": "Indicates whether the Payment gateway supports Network Token (from Card schemes)"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for Payment Gateway Description"
+      },
+      "PayTools_Shared.Models.ValidationErrorMessage": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "description": "Field name the error(s) are referring to",
+            "nullable": true
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of errors",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Model for display validation error messages"
+      },
+      "Payments.BankCard": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/Payments.CardTypes"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "nullable": true
+          },
+          "issueNumber": {
+            "maxLength": 2,
+            "type": "string",
+            "nullable": true
+          },
+          "ownerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "securityCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "expirationMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expirationYear": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Payments.CardTypes": {
+        "enum": [
+          "Unspecified",
+          "AMEX",
+          "BC",
+          "CartaSi",
+          "Dankort",
+          "Delta",
+          "DinersClub",
+          "Discover",
+          "Electron",
+          "Elo",
+          "enRoute",
+          "Hipercard",
+          "JCB",
+          "Maestro",
+          "MasterCard",
+          "MC_Alaska",
+          "MC_Canada",
+          "Switch",
+          "Troy",
+          "UATP",
+          "UnionPay",
+          "Visa"
+        ],
+        "type": "string"
+      },
+      "Payments.CurrencyCode": {
+        "enum": [
+          "AFN",
+          "EUR",
+          "ALL",
+          "DZD",
+          "USD",
+          "AOA",
+          "XCD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BDT",
+          "BBD",
+          "BYR",
+          "BZD",
+          "XOF",
+          "BMD",
+          "BTN",
+          "INR",
+          "BOB",
+          "BOV",
+          "BAM",
+          "BWP",
+          "NOK",
+          "BRL",
+          "BND",
+          "BGN",
+          "BIF",
+          "KHR",
+          "XAF",
+          "CAD",
+          "CVE",
+          "KYD",
+          "CLF",
+          "CLP",
+          "CNY",
+          "COP",
+          "COU",
+          "KMF",
+          "CDF",
+          "NZD",
+          "CRC",
+          "HRK",
+          "CUC",
+          "CUP",
+          "ANG",
+          "CZK",
+          "DKK",
+          "DJF",
+          "DOP",
+          "EGP",
+          "SVC",
+          "ERN",
+          "ETB",
+          "FKP",
+          "FJD",
+          "XPF",
+          "GMD",
+          "GEL",
+          "GHS",
+          "GIP",
+          "GTQ",
+          "GBP",
+          "GNF",
+          "GYD",
+          "HTG",
+          "HNL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "IDR",
+          "XDR",
+          "IRR",
+          "IQD",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KES",
+          "KPW",
+          "KRW",
+          "KWD",
+          "KGS",
+          "LAK",
+          "LBP",
+          "LSL",
+          "ZAR",
+          "LRD",
+          "LYD",
+          "CHF",
+          "LTL",
+          "MOP",
+          "MKD",
+          "MGA",
+          "MWK",
+          "MYR",
+          "MVR",
+          "MRO",
+          "MUR",
+          "XUA",
+          "MXN",
+          "MXV",
+          "MDL",
+          "MNT",
+          "MAD",
+          "MZN",
+          "MMK",
+          "NAD",
+          "NPR",
+          "NIO",
+          "NGN",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PGK",
+          "PYG",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "RWF",
+          "SHP",
+          "WST",
+          "STD",
+          "SAR",
+          "RSD",
+          "SCR",
+          "SLL",
+          "SGD",
+          "XSU",
+          "SBD",
+          "SOS",
+          "SSP",
+          "LKR",
+          "SDG",
+          "SRD",
+          "SZL",
+          "SEK",
+          "CHE",
+          "CHW",
+          "SYP",
+          "TWD",
+          "TJS",
+          "TZS",
+          "THB",
+          "TOP",
+          "TTD",
+          "TND",
+          "TRY",
+          "TMT",
+          "UGX",
+          "UAH",
+          "AED",
+          "USN",
+          "UYI",
+          "UYU",
+          "UZS",
+          "VUV",
+          "VEF",
+          "VND",
+          "YER",
+          "ZMW",
+          "ZWL",
+          "XBA",
+          "XBB",
+          "XBC",
+          "XBD",
+          "XTS",
+          "XXX",
+          "XAU",
+          "XPD",
+          "XPT",
+          "XAG"
+        ],
+        "type": "string"
+      },
+      "Payments.NetworkTokenSchemes": {
+        "enum": [
+          "Visa",
+          "MasterCard",
+          "Amex"
+        ],
+        "type": "string"
+      },
+      "Payments.Operation": {
+        "enum": [
+          "Charge",
+          "PreAuth",
+          "Capture",
+          "Void",
+          "Refund",
+          "Tokenize",
+          "Status"
+        ],
+        "type": "string"
+      },
+      "Payments.OperationResult": {
+        "type": "object",
+        "properties": {
+          "authorizationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Payments.CurrencyCode"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "operationType": {
+            "$ref": "#/components/schemas/Payments.Operation"
+          },
+          "operationResultCode": {
+            "$ref": "#/components/schemas/Payments.Result"
+          },
+          "operationResultDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "customGatewayResponse": {
+            "nullable": true
+          },
+          "gatewayName": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayReference": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayResultCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayResultDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayResultSubCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayResultSubDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "gatewayToken": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Payments.Result": {
+        "enum": [
+          "Success",
+          "Accepted",
+          "Rejected",
+          "TemporaryFailure",
+          "FatalFailure",
+          "NotImplemented"
+        ],
+        "type": "string"
+      },
+      "Payments.ThreeDS": {
+        "type": "object",
+        "properties": {
+          "authenticationValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "eci": {
+            "type": "string",
+            "nullable": true
+          },
+          "xid": {
+            "type": "string",
+            "nullable": true
+          },
+          "version": {
+            "type": "string",
+            "nullable": true
+          },
+          "sli": {
+            "type": "string",
+            "nullable": true
+          },
+          "acsTransactionId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Enums.Mode": {
+        "enum": [
+          "TEST",
+          "LIVE"
+        ],
+        "type": "string"
+      },
+      "eWallet.Enums.Operation": {
+        "enum": [
+          "CHARGE",
+          "TOKENIZE",
+          "CHARGE_AND_TOKENIZE",
+          "PREAUTH_AND_TOKENIZE"
+        ],
+        "type": "string"
+      },
+      "eWallet.Models.EWalletResultData": {
+        "type": "object",
+        "properties": {
+          "upgChargeResults": {
+            "$ref": "#/components/schemas/Payments.OperationResult"
+          },
+          "directChargeResults": {
+            "$ref": "#/components/schemas/eWallet.Models.GenericResults1System.ObjectSystem.Private.CoreLibVersion8.0.0.0CultureneutralPublicKeyToken7cec85d7bea7798e"
+          },
+          "tokenAndMaskedCardModel": {
+            "$ref": "#/components/schemas/eWallet.Models.TokenAndMaskedCardModel"
+          },
+          "failedUpgChargeResults": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payments.OperationResult"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.FallbackUpg": {
+        "type": "object",
+        "properties": {
+          "paymentGatewayAccountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "pass3DSData": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.GenericResults1System.ObjectSystem.Private.CoreLibVersion8.0.0.0CultureneutralPublicKeyToken7cec85d7bea7798e": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.StartEWalletsSessionRequest": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "$ref": "#/components/schemas/eWallet.Enums.Operation"
+          },
+          "paymentGatewayAccountId": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowedeWalletAccountIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "customerName": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerPhone": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "storedCards": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/eWallet.Models.StartEWalletsSessionRequestStoredCard"
+            },
+            "nullable": true
+          },
+          "mode": {
+            "$ref": "#/components/schemas/eWallet.Enums.Mode"
+          },
+          "currencyCode": {
+            "$ref": "#/components/schemas/Payments.CurrencyCode"
+          },
+          "countryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "paymentNote": {
+            "type": "string",
+            "nullable": true
+          },
+          "allowedBrands": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payments.CardTypes"
+            },
+            "nullable": true
+          },
+          "fallbackUpgs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/eWallet.Models.FallbackUpg"
+            },
+            "nullable": true
+          },
+          "publicKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.StartEWalletsSessionRequestStoredCard": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "expirationYear": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "expirationMonth": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nameOnCard": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastDigits": {
+            "pattern": "\\d{4}",
+            "type": "string",
+            "nullable": true
+          },
+          "brand": {
+            "$ref": "#/components/schemas/Payments.CardTypes"
+          },
+          "ownerId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.TokenAndMaskedCardModel": {
+        "type": "object",
+        "properties": {
+          "bankCard": {
+            "$ref": "#/components/schemas/Payments.BankCard"
+          },
+          "threeDS": {
+            "$ref": "#/components/schemas/Payments.ThreeDS"
+          },
+          "errorMessage": {
+            "type": "string",
+            "nullable": true
+          },
+          "token": {
+            "type": "string",
+            "nullable": true
+          },
+          "tokenLocation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "eWallet.Models.TokenModel": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "description": "Please enter ApiKey into field",
+        "name": "X-Api-Key",
+        "in": "header"
+      },
+      "JwsAuth": {
+        "type": "http",
+        "description": "Please enter JWS token into field",
+        "scheme": "bearer",
+        "bearerFormat": "Jwt"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "EWalletOperations",
+      "description": "Card operations controller"
+    },
+    {
+      "name": "PaymentGatewayAccounts",
+      "description": "Payment Gateway Accounts"
+    },
+    {
+      "name": "PaymentGateway",
+      "description": "Universal Payment Gateway"
+    },
+    {
+      "name": "StringTokens",
+      "description": "Token management"
+    },
+    {
+      "name": "Utils",
+      "description": "Utils"
+    }
+  ]
+}
+
