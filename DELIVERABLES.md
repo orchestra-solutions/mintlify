@@ -20,9 +20,10 @@
 
 ## Support & Community (Priority 4)
 - [ ] FAQ & Troubleshooting - `docs/faq.md`
+- [ ] Tutorials - `docs/tutorials/`
 - [ ] Status Page - (external tool)
 - [ ] Community Forum/Discord - (external)
-- [ ] Blog/Tutorials - `blog/`
+- [x] Blog - (existing on orchestrasolutions.com)
 
 ## Metrics & Feedback (Priority 5)
 - [ ] Analytics Dashboard - (external tool)
