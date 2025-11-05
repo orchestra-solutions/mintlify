@@ -29,6 +29,12 @@
               "authentication",
               "sandbox"
             ]
+          },
+          {
+            "group": "Troubleshooting",
+            "pages": [
+              "errors"
+            ]
           }
         ]
       },

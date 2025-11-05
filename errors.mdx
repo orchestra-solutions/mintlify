@@ -1,0 +1,368 @@
+---
+title: "Error Reference"
+description: "Comprehensive error codes and solutions"
+---
+
+# Error Reference
+
+Orchestra returns standard HTTP status codes and descriptive error messages. Use this reference to understand what went wrong and how to fix it.
+
+## HTTP status codes
+
+### 200 - OK
+
+Request succeeded. Response body contains the result.
+
+### 201 - Created
+
+Resource was successfully created (e.g., a StringToken).
+
+### 202 - Accepted
+
+Request accepted for processing by the payment gateway. The actual result will be determined asynchronously. Poll the `/PaymentGateway/status` endpoint to check the result.
+
+### 400 - Bad Request
+
+The request contains invalid data. The response body includes details about which field is problematic.
+
+```json
+{
+  "fieldName": "amount",
+  "errors": [
+    "The amount must be greater than 0"
+  ]
+}
+```
+
+**Common causes:**
+- Missing required fields
+- Invalid field values (e.g., negative amount, invalid currency)
+- Malformed JSON
+
+**Solution:** Review the error message, correct the field, and retry.
+
+### 401 - Unauthorized
+
+Authentication failed. Either the API key is missing, invalid, or expired.
+
+```json
+{
+  "fieldName": "X-Api-Key",
+  "errors": [
+    "API key is missing or invalid"
+  ]
+}
+```
+
+**Common causes:**
+- `X-Api-Key` header is missing
+- API key value is incorrect (typo, extra spaces)
+- API key has been deleted
+- API key is for the wrong environment (sandbox vs production)
+
+**Solution:**
+1. Verify the `X-Api-Key` header is present in your request
+2. Confirm the key value matches exactly (copy-paste from the portal)
+3. Check that the key hasn't been deleted in the API Keys page
+4. If using sandbox, ensure you're using a sandbox key
+5. Re-generate the key if you suspect it's compromised
+
+### 404 - Not Found
+
+The requested resource doesn't exist.
+
+**Common causes:**
+- Incorrect endpoint URL
+- Payment Gateway Account name doesn't exist
+- StringToken has been deleted
+- Transaction ID doesn't exist
+
+**Solution:**
+- Double-check the endpoint URL
+- Verify the resource name/ID exists
+- For Payment Gateway Accounts, list all accounts with `GET /PaymentGatewayAccounts`
+
+### 409 - Conflict
+
+The payment gateway rejected the request or the operation isn't supported.
+
+**Common causes:**
+- Card was declined
+- Gateway doesn't support the requested operation
+- Transaction is in an invalid state for the operation (e.g., trying to refund a void)
+- 3D Secure authentication failed
+
+**Solution:**
+- Review the `gatewayResultDescription` in the response for details
+- For card declines, try a different card or contact the cardholder
+- Check the payment gateway documentation for supported operations
+
+### 500 - Internal Server Error
+
+An unexpected error occurred on Orchestra's side.
+
+**Solution:** This is rare. If it persists:
+1. Wait a few seconds and retry
+2. Check the [status page](https://status.orchestrasolutions.com)
+3. Contact support with the request details
+
+### 503 - Service Unavailable
+
+The payment gateway is temporarily unavailable.
+
+**Solution:**
+1. Wait a few moments
+2. Retry with exponential backoff (wait 1s, then 2s, then 4s, etc.)
+3. If it persists, check the [status page](https://status.orchestrasolutions.com)
+
+## Common validation errors
+
+### Missing required fields
+
+```json
+{
+  "fieldName": "amount",
+  "errors": [
+    "The 'amount' field is required"
+  ]
+}
+```
+
+**Solution:** Include all required fields in your request. Check the [API reference](/api-reference) for your endpoint's required fields.
+
+### Invalid amount
+
+```json
+{
+  "fieldName": "amount",
+  "errors": [
+    "The amount must be greater than 0"
+  ]
+}
+```
+
+**Solutions:**
+- Amount must be positive (> 0)
+- Amount should be in major units (e.g., 10.50 for $10.50, not 1050)
+- Check for reasonable values (most gateways have min/max limits)
+
+### Invalid currency code
+
+```json
+{
+  "fieldName": "currency",
+  "errors": [
+    "Currency 'XXX' is not valid"
+  ]
+}
+```
+
+**Solution:** Use valid ISO 4217 currency codes (e.g., `USD`, `EUR`, `GBP`). See the [Sandbox guide](/sandbox#test-currency-codes) for common codes.
+
+### Invalid cardholder name
+
+```json
+{
+  "fieldName": "card.cardHolderName",
+  "errors": [
+    "Cardholder name cannot be empty"
+  ]
+}
+```
+
+**Solution:** Provide the cardholder's full name as it appears on the card.
+
+### Invalid card number
+
+```json
+{
+  "fieldName": "card.cardNumber",
+  "errors": [
+    "Card number is invalid"
+  ]
+}
+```
+
+**Solutions:**
+- Verify the card number is correct
+- In sandbox, use [test card numbers](/sandbox#test-card-numbers)
+- Remove spaces or dashes (send digits only)
+- Check the card hasn't been truncated
+
+### Invalid expiration date
+
+```json
+{
+  "fieldName": "card.expirationYear",
+  "errors": [
+    "Card expiration date is in the past"
+  ]
+}
+```
+
+**Solutions:**
+- Verify the expiration month and year are correct
+- Ensure the card hasn't expired
+- Use future dates for sandbox testing
+
+### Invalid CVC
+
+```json
+{
+  "fieldName": "card.cvv",
+  "errors": [
+    "CVV must be 3 or 4 digits"
+  ]
+}
+```
+
+**Solution:** Provide the 3 or 4 digit code on the back of the card.
+
+### Invalid country code
+
+```json
+{
+  "fieldName": "payerDetails.countryCode",
+  "errors": [
+    "Country code must be a valid 2-letter ISO 3166-1 code"
+  ]
+}
+```
+
+**Solution:** Use 2-letter country codes (e.g., `US`, `GB`, `CA`, `DE`).
+
+## Payment gateway errors
+
+When a payment gateway rejects a request, the response includes gateway-specific details:
+
+```json
+{
+  "operationType": "Charge",
+  "operationResultCode": "Rejected",
+  "operationResultDescription": "Card declined",
+  "gatewayName": "stripe",
+  "gatewayResultCode": "card_declined",
+  "gatewayResultDescription": "Your card was declined",
+  "amount": 25.00,
+  "currency": "USD"
+}
+```
+
+### Card declined
+
+**Cause:** The payment gateway rejected the card.
+
+**Solutions:**
+- Try a different payment method
+- Contact the cardholder's bank
+- In sandbox, use `4000000000000002` to test declines
+
+### Insufficient funds
+
+**Cause:** The card doesn't have enough balance.
+
+**Solution:** Use a different card or add funds to the account.
+
+### Expired card
+
+**Cause:** The card's expiration date has passed.
+
+**Solution:** Use a valid card with a future expiration date.
+
+### Lost or stolen card
+
+**Cause:** The card issuer has flagged it as lost/stolen.
+
+**Solution:** Use a different card.
+
+### 3D Secure authentication failed
+
+**Cause:** The cardholder failed 3D Secure authentication.
+
+**Solutions:**
+- Ask the cardholder to re-authenticate
+- Try without 3D Secure (if your gateway allows it)
+- Check that 3D Secure data is correct if you're providing it
+
+## Debugging workflow
+
+<Steps>
+  <Step title="Check the HTTP status code">
+    Is it 4xx (client error) or 5xx (server error)?
+  </Step>
+  <Step title="Review the error message">
+    Does it mention a specific field? Check the field name and value.
+  </Step>
+  <Step title="Check the API reference">
+    Verify you're calling the correct endpoint with required fields.
+  </Step>
+  <Step title="Validate your data">
+    - Required fields present?
+    - Data types correct? (string vs number)
+    - Values within expected ranges?
+    - For cards: use test numbers in sandbox
+  </Step>
+  <Step title="Check the gateway response">
+    If `gatewayResultDescription` is present, look up that error in your gateway's documentation.
+  </Step>
+  <Step title="Test in sandbox first">
+    If you haven't already, test the same scenario in sandbox to isolate the issue.
+  </Step>
+  <Step title="Check status page">
+    Is there an incident? Visit https://status.orchestrasolutions.com
+  </Step>
+  <Step title="Contact support">
+    If stuck, provide the request details and error response to the support team.
+  </Step>
+</Steps>
+
+## Common scenarios
+
+### "API key is missing or invalid"
+
+**Checklist:**
+- [ ] Is `X-Api-Key` header present in the request?
+- [ ] Is the key value correct (copy-pasted, no extra spaces)?
+- [ ] Has the key been deleted in the portal?
+- [ ] Are you using the correct environment (sandbox vs production)?
+- [ ] If using multiple keys, are you using the right one?
+
+### Card charge succeeds but doesn't appear in my gateway
+
+**Checklist:**
+- [ ] Are you checking the sandbox environment in your gateway?
+- [ ] Is the transaction ID correct?
+- [ ] Has enough time passed for the transaction to sync?
+- [ ] Are you using the correct gateway account name?
+- [ ] Is the gateway account properly configured?
+
+### 3D Secure is always failing
+
+**Checklist:**
+- [ ] Is your gateway configured for 3D Secure?
+- [ ] Are you passing valid 3D Secure data?
+- [ ] In sandbox, is 3D Secure authentication mocked?
+- [ ] Check your gateway's 3D Secure documentation
+
+### Refund fails with "transaction not found"
+
+**Checklist:**
+- [ ] Is the original charge ID (`refTransId`) correct?
+- [ ] Has the original charge completed (check status)?
+- [ ] Can you refund this type of transaction (some gateways don't allow refunds on certain operations)?
+- [ ] Is enough time passed since the original transaction?
+
+## Getting help
+
+If you can't find the answer here:
+
+1. **Search [GitHub Discussions](https://github.com/adam-marash/orchsol-docs/discussions)** — others may have had the same issue
+2. **Ask on GitHub Discussions** — the community and support team monitor it
+3. **Check the [API reference](/api-reference)** — endpoint-specific documentation
+4. **Review your gateway's documentation** — for gateway-specific errors
+
+When asking for help, include:
+- Your request (sanitized, no sensitive data)
+- The error response
+- Steps to reproduce
+- What you've already tried
