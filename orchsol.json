@@ -2291,7 +2291,7 @@
   "tags": [
     {
       "name": "EWalletOperations",
-      "description": "Card operations controller"
+      "description": "Secure eWallet payment operations. The eWallet API provides a complete payment experience with pre-built UI components for card and alternative payment methods. Your application remains outside PCI-DSS scope while the Orchestra Library handles all payment collection, authentication, and processing automatically. Built-in support for 3D Secure, OTP authentication, and modern payment methods."
     },
     {
       "name": "PaymentGatewayAccounts",
@@ -2299,11 +2299,11 @@
     },
     {
       "name": "PaymentGateway",
-      "description": "Universal Payment Gateway"
+      "description": "Universal Payment Gateway (UPG) for orchestrating payments across multiple providers. Send standardized requests to charge, authorize, capture, refund, tokenize, or check the status of transactions. Orchestra routes to your configured payment gateway and returns consistent responses regardless of provider. Supports automatic failover to backup gateways."
     },
     {
       "name": "StringTokens",
-      "description": "Token management"
+      "description": "Secure string tokenization for sensitive data. Store card numbers, bank account details, or other sensitive strings server-side. Orchestra returns a secure token that you can reference in future transactions without handling raw sensitive data again. Reduces PCI compliance burden by vaulting sensitive information."
     },
     {
       "name": "Utils",
