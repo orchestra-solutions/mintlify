@@ -22,7 +22,7 @@
 - [ ] FAQ & Troubleshooting - `docs/faq.md`
 - [ ] Tutorials - `docs/tutorials/`
 - [ ] Status Page - (external tool)
-- [ ] Community Forum/Discord - (external)
+- [x] Community - (GitHub Discussions)
 - [x] Blog - (existing on orchestrasolutions.com)
 
 ## Metrics & Feedback (Priority 5)
