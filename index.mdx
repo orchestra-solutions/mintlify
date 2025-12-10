@@ -3,61 +3,153 @@ title: "Orchestra Solutions Developer Docs"
 description: "Payment orchestration platform for developers"
 ---
 
+<Frame>
+  <img src="/images/hero-light.png" alt="Orchestra Solutions" />
+</Frame>
+
 # Orchestra Solutions
+
+<Note>
+**Happy Holidays from the Orchestra team!** We hope your integrations are merry and your deployments are bright.
+</Note>
 
 Payment orchestration platform. With a single API integration, route payments across multiple providers worldwide, support regional payment methods, and meet compliance requirements without building separate integrations for each market and provider.
 
-## Getting started
+<Tip>
+New to Orchestra? Start with our [Getting Started](/getting-started) guide to unwrap your first integration in minutes!
+</Tip>
 
-<Card
-  title="Getting Started"
-  icon="rocket"
-  href="/getting-started"
-  horizontal
->
-  Sign up for sandbox, generate an API key, and make your first API call.
-</Card>
+---
 
-## Choose your integration approach
+## Unwrap your integration
 
-<Card
-  title="API vs Library"
-  icon="git-branch"
-  href="/api-vs-library"
-  horizontal
->
-  Decide between REST API (full control) or JavaScript Library (rapid deployment).
-</Card>
+<CardGroup cols={2}>
+  <Card
+    title="Getting Started"
+    icon="gift"
+    href="/getting-started"
+  >
+    Sign up for sandbox, generate an API key, and make your first API call.
+  </Card>
+  <Card
+    title="API vs Library"
+    icon="snowflake"
+    href="/api-vs-library"
+  >
+    Decide between REST API (full control) or JavaScript Library (rapid deployment).
+  </Card>
+</CardGroup>
 
-## Core guides
+---
 
-<Columns cols={2}>
+## Festive guides
+
+<CardGroup cols={2}>
   <Card
     title="Make Your First Charge"
-    icon="credit-card"
+    icon="sleigh"
     href="/make-first-charge"
   >
     Create a sandbox charge with direct gateway credentials.
   </Card>
   <Card
     title="API Reference"
-    icon="terminal"
+    icon="tree"
     href="/api-reference/introduction"
   >
     Complete API documentation with request/response examples.
   </Card>
   <Card
     title="Authentication"
-    icon="lock"
+    icon="star"
     href="/authentication"
   >
     API key management and security best practices.
   </Card>
   <Card
     title="Sandbox Environment"
-    icon="flask"
+    icon="snowman"
     href="/sandbox"
   >
     Test your integration safely before going live.
   </Card>
-</Columns>
+</CardGroup>
+
+---
+
+## Holiday checklist
+
+<AccordionGroup>
+  <Accordion title="1. Register for sandbox access" icon="candy-cane">
+    Head to the [developer portal](https://portal.epaytools.com/) to create your free sandbox account. No credit card required!
+  </Accordion>
+  <Accordion title="2. Generate your API key" icon="key">
+    Once registered, navigate to API Keys in your dashboard and generate your first key. Keep it safe like a precious gift!
+  </Accordion>
+  <Accordion title="3. Make your first charge" icon="bolt">
+    Follow our [First Charge guide](/make-first-charge) to process a test payment in the sandbox environment.
+  </Accordion>
+  <Accordion title="4. Go live!" icon="rocket">
+    When you're ready, switch to production credentials and start processing real payments.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Quick links
+
+<Tabs>
+  <Tab title="SDKs">
+    Install our official SDKs to get started quickly:
+
+    <CodeGroup>
+    ```bash npm
+    npm install orchestra-p18n
+    ```
+    ```bash pip
+    pip install orchestra-p18n
+    ```
+    ```bash go
+    go get github.com/orchestrasolutions/orchestra-go
+    ```
+    </CodeGroup>
+
+    <Info>
+    See the full [SDKs documentation](/sdks) for usage examples.
+    </Info>
+  </Tab>
+  <Tab title="Test Cards">
+    Use these test card numbers in sandbox:
+
+    | Card | Number | Result |
+    |------|--------|--------|
+    | Visa | `4111111111111111` | Success |
+    | Mastercard | `5500000000000004` | Success |
+    | Declined | `4000000000000002` | Decline |
+
+    <Warning>
+    Test cards only work in sandbox mode. Never use real card numbers for testing!
+    </Warning>
+  </Tab>
+  <Tab title="Support">
+    Need help? We're here for you:
+
+    <Steps>
+      <Step title="Check the docs">
+        Browse our comprehensive documentation for answers.
+      </Step>
+      <Step title="Search GitHub Discussions">
+        See if your question has already been answered.
+      </Step>
+      <Step title="Open an issue">
+        Still stuck? Open a GitHub issue and we'll help!
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+---
+
+<Check>
+**Ready to start?** [Create your sandbox account](https://portal.epaytools.com/) and make your first API call today!
+</Check>
